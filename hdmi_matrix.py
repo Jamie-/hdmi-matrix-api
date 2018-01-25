@@ -90,17 +90,17 @@ class HDMIMatrix:
             raise Exception("Can't use simple_map_io if connecting manually.")
 
     # Get the input number a particular output is mapped to
-    def get_input(self, output):
+    def get_output(self, output):
         try:
             if self._zero_index:
-                return self.get_inputs()[output]
+                return self.get_outputs()[output]
             else:
-                return self.get_inputs()[output-1]
+                return self.get_outputs()[output-1]
         except KeyError:
             raise ValueError('Specified output must be in range.') from None
 
     # Get all output mappings as dict
-    def get_inputs(self):
+    def get_outputs(self):
         if not self._socket_connected:
             raise Exception('You must connect to the device before using any non-simple functions.')
 
@@ -114,21 +114,21 @@ class HDMIMatrix:
                 d[i] = int(o[i]) + 1
         return d
 
-    # Quick get inputs, handles socket connect and disconnect
-    def simple_get_inputs(self):
+    # Quick get output mappings, handles socket connect and disconnect
+    def simple_get_outputs(self):
         if not self._socket_connected:
             self.connect()
-            o = self.get_inputs()
+            o = self.get_outputs()
             self.disconnect()
             return o
         else:
             raise Exception("Can't use simple_get_inputs if connecting manually.")
 
-    # Quick get input, handles socket connect and disconnect
-    def simple_get_input(self, output):
+    # Quick get output mapping, handles socket connect and disconnect
+    def simple_get_output(self, output):
         if not self._socket_connected:
             self.connect()
-            o = self.get_input(output)
+            o = self.get_output(output)
             self.disconnect()
             return o
         else:
